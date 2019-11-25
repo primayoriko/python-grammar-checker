@@ -6,11 +6,19 @@
 import sys
 import os
 import re
-import pandas as pd
-
 class Parser:
-    def __init__(self, filename):
-        with open(filename, 'r') as file:
+    def __init__(self, fileinput, filegrammar):
+        self.parseInput(self, fileinput)
+        self.parseGrammar(self, filegrammar)
+        
+    
+    def parseGrammar(self, filegrammar):
+        with open(filegrammar, 'r') as file:
             self.raw_code = file.read()
             self.code = self.raw_code.splitlines()
+
     
+    def parseInput(self, fileinput):
+        with open(fileinput, 'r') as file:
+            self.raw_code = file.read()
+            self.code = self.raw_code.splitlines()
