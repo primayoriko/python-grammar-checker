@@ -1,4 +1,6 @@
-a = str(input())
-b = str(input())
+filename = str(input('Nama file: '))
 
-print(a)
+with open(filename, 'r') as file:
+    data = file.read().splitlines()
+
+print(data)
