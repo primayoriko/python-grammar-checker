@@ -1,2 +1,1 @@
-x = "" is ''
-print(x)
+class 
