@@ -1,1 +1,98 @@
+Yang perlu diimplementasi :
+1. False
+2. None
+3. True
+4. and
+5. as
+6. break
+7. class
+8. continue
+9. def
+10. elif
+11. else
+12. for
+13. from
+14. if
+15. import
+16. in
+17. is
+18. not
+19. or
+20. pass
+21. raise
+22. return
+23. while
+24. with
 
+
+
+HURUF -> a sampe z
+ANGKA -> 0 sampe 9
+FALSE -> False
+NONE -> None
+TRUE -> True
+AND -> and
+AS -> as
+BREAK -> break
+CLASS -> class
+CONT -> continue
+DEF -> def
+ELIF -> elif
+ELSE -> else
+FOR -> for
+FROM -> from
+IF -> if
+IMP -> import
+IN -> in
+IS -> is
+NOT -> not
+OR -> or
+PASS -> pass
+RAISE -> raise
+RET -> return
+WHILE -> while
+WITH -> with
+INDENT -> & 
+SPASI -> #
+ENTER -> $
+RANGE -> range
+PRINT -> print
+XPRINT -> PRINT OPENBRACKET EXP CLOSEBRACKET
+GREATER->>|>=|>#|#>|#>#|#>=|>=#|#>=#
+LESS-><|<=|<#|#<|#<#|#<=|<=#|#<=#
+EQ->#==|==|==#|#==#
+OPENBRACKET->#(|(
+CLOSEBRACKET->)#|)
+TITIKDUA->:
+VAR->HURUF|HURUF ANGKA
+
+XFOR->FOR # HURUF # IN # RANGE OPENBRACKET ANGKA CLOSEBRACKET TITIKDUA $ EXP|
+        FOR # HURUF # IN # RANGE OPENBRACKET ANGKA , ANGKA CLOSEBRACKET TITIKDUA $ EXP|
+        FOR # HURUF # IN # VAR # TITIKDUA
+
+XIF -> IF REL TITIKDUA EXP
+REL->OPENBRACKET ANGKA CLOSEBRACKET|
+        OPENBRACKET ANGKA GREATER ANGKA CLOSEBRACKET|
+        OPENBRACKET ANGKA LESS ANGKA CLOSEBRACKET|
+        OPENBRACKET ANGKA EQ ANGKA CLOSEBRACKET|
+        ANGKA EQ ANGKA|
+        ANGKA LESS ANGKA|
+        ANGKA GREATER ANGKA
+
+EXP -> KOSONG |
+        
+        
+        
+
+NUM -> #ANGKA |
+            #ANGKA#
+            ANGKA#
+            ANGKA ANGKA
+            ANGKA * ANGKA |
+            ANGKA + ANGKA |
+            ANGKA - ANGKA |
+            ANGKA / ANGKA |
+            ANGKA % ANGKA |
+            ANGKA = ANGKA |
+            ANGKA == ANGKA | 
+ 
