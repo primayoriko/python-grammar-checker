@@ -1,0 +1,17 @@
+from PIL import Image
+import pytesseract
+import time
+import keyboard
+import random
+
+#this function is needed to run this
+
+def run(x):
+    for i in range(5):
+        print(i)
+
+        if(i > 3):
+            i -= 2
+        else:
+            i += 3
+    return x

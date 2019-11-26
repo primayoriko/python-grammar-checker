@@ -1,3 +1,94 @@
+import sys, re
+
+token_list = [
+    (r'[ \n\t]+',                                        None),
+    (r'#[^\n]*',                                         None),
+    (r'(([1-9][0-9]*)?[0-9](\.[0-9]*)?|\.[0-9]+)',     'num'),
+    (r'0x[0-9a-fA-F]+',                     'num'),
+    (r'\*\*',        'op'),
+    (r'//',        'op'),
+    (r'==',        'op'),
+    (r'!=',        'op'),
+    (r'[\+\-\*/]?=',                    'assign'),
+    (r'[\+\*/\-]',        'opm'),
+    (r'[><]=?',                           'op'),
+    (r'False',                   'false'),
+    (r'None',                    'none'),
+    (r'True',                    'true'),
+    (r'and ',                     'and'),
+    (r'as ',                    'as'),
+    (r'break',                     'break'),
+    (r'class',                    'class'),
+    (r'continue',                     'continue'),
+    (r'def ',                    'def'),
+    (r'elif',                     'elif'),
+    (r'else',                   'else'),
+    (r'for ',                     'for'),
+    (r'from ',                     'from'),
+    (r'if',                    'if'),
+    (r'import ',                   'import'),
+    (r'in ',                    'in'),
+    (r'is ',                   'is'),
+    (r'not ',                    'not'),
+    (r'or ',                  'or'),
+    (r'pass',                  'pass'),
+    (r'while',                 'while'),
+    (r'raise',                    'raise'),
+    (r'range',                    'range'),
+    (r'return ',                   'return'),
+    (r'with ',                   'with'),
+    (r'print',                   'print'),
+    (r'(["\'])(?:(?=(\\?))\2.)*?\1',                   'str'),
+    (r'\(',                   '('),
+    (r'\)',                   ')'),
+    (r'\[',                   '['),
+    (r'\]',                   ']'),
+    (r'\{',                   '{'),
+    (r'\}',                   '}'),
+    (r'\:',                   ':'),
+    (r'\'',                   '\''),
+    (r'\"',                  '"'),
+    (r',',                   ','),
+    (r'[_a-zA-Z][_a-zA-Z0-9]*(\.[_a-zA-Z][_a-zA-Z0-9]*)*', 'var')
+]
+def lexer(text_code, token_list):
+    pos = 0 
+    tokenized = []
+
+    while pos < len(text_code):
+        match = None
+        for token in token_list:
+            pattern, tag = token
+            regex = re.compile(pattern)
+            match = regex.match(text_code, pos)
+
+            if match:
+                #text = match.group(0)
+                if tag:
+                    #tokenz = (text, tag)
+                    tokenz = tag
+                    tokenized.append(tokenz)
+                break
+
+        if not match:
+            print("Your file .py error")
+            sys.exit(1)
+        pos = match.end(0)
+
+    return tokenized 
+
+
+def parseGrammar(filename):
+    rules = {}
+    with open(filename, 'r') as file:   
+        grammar = file.read().splitlines()
+        for i in grammar:
+            temp = i.split(' -> ')
+            product = temp[1].split(' | ')
+            if temp[0] not in rules: rules[temp[0]] = product
+            else : rules[temp[0]] += product
+
+    return rules
 
 def readCNF(filepath):
     grammarLeft = []
@@ -30,7 +121,7 @@ def readCNF(filepath):
 def isTerminal(a):
     return (a[1] == "" and not(a[0].isupper()))
 
-def CYK(ln, grammarLeft, grammarRight, dp):
+def CYK(ln, grammarLeft, grammarRight, dp, inp):
     dp = [[[] for j in range(ln + 1)] for i in range(ln + 1)]
     panjang = len(grammarLeft)
     for i in range(ln):
@@ -90,11 +181,78 @@ def printTree(dp, ln):
                 print("] ", end="")
         print()
 
-inp = ["var", "assign", "var"];
-dp = []
+
+
 grammarLeft = []
 grammarRight = []
 grammarLeft, grammarRight = readCNF("cnf.txt")
+
+inputfile = str(input("masukkan input file : "))
+
+isFunc = False
+isLoop = False
+
+ifStack = []
+ptr = 0
+Er = -1
+currline = 1
+with open(inputfile) as fp:
+    line = fp.readline()
+    while line:
+        if(line[-1:] == '\n'):
+            inp = line[:-1]
+        else:
+            inp = line
+        if(inp!=""):
+            lex = lexer(inp, token_list)
+            print(lex)
+            if(not(lex == [])):
+                if(lex[0] == "def"):
+                    isFunc = True
+                elif(lex[0] == "while" or lex[0] == "for"):
+                    isLoop = True
+                elif(lex[0] == "return"):
+                    if(isFunc == False):
+                        Er = currline
+                        break
+                elif(lex[0] == "continue" or lex[0] == "break"):
+                    if(isLoop == False):
+                        Er = currline
+                        break
+                elif(lex[0] == "if"):
+                    ifStack.append("if")
+                elif(lex[0] == "elif"):
+                    if(len(ifStack) == 0):
+                        Er = currline
+                        break
+                    else:
+                        ifStack.pop()
+                        ifStack.append("elif")
+                elif(lex[0] == "else"):
+                    if(len(ifStack) == 0):
+                        Er = currline
+                        break
+                    else:
+                        ifStack.pop()
+                dp = []
+                dp = CYK(len(lex), grammarLeft, grammarRight, dp, lex)
+                #printTree(dp, len(lex))
+                if(isValid(dp, len(lex)) == False):
+                    Er = currline
+                    break
+            
+            
+            
+            
+        
+        currline += 1
+        line = fp.readline()
+
+if(Er == -1):
+    print("ACCEPTED")
+else:
+    print("Error on line : " + str(Er))
+'''
 dp = CYK(len(inp), grammarLeft, grammarRight, dp)
 printTree(dp, len(inp))
 
@@ -102,3 +260,4 @@ if(isValid(dp, len(inp))):
     print("ACCEPTED")
 else:
     print("NOT VALID")
+    '''
