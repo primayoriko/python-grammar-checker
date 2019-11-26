@@ -1,2 +1,2 @@
-def Naufal(x,y):
-    print(x)
+x = "" is ''
+print(x)
