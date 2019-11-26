@@ -5,6 +5,7 @@ token_list = [
     (r'#[^\n]*',                                         None),
     (r'(([1-9][0-9]*)?[0-9](\.[0-9]*)?|\.[0-9]+)',     'num'),
     (r'0x[0-9a-fA-F]+',                     'num'),
+    (r'->', 'panah'),
     (r'\*\*',        'op'),
     (r'//',        'op'),
     (r'==',        'op'),
@@ -251,13 +252,4 @@ with open(inputfile) as fp:
 if(Er == -1):
     print("ACCEPTED")
 else:
-    print("Error on line : " + str(Er))
-'''
-dp = CYK(len(inp), grammarLeft, grammarRight, dp)
-printTree(dp, len(inp))
-
-if(isValid(dp, len(inp))):
-    print("ACCEPTED")
-else:
-    print("NOT VALID")
-    '''
+    print("Syntax Error on line : " + str(Er))

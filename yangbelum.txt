@@ -1,0 +1,5 @@
+yang belum bisa:
+type hinting = def dsagsabs(sabsabsa) -> var:
+assign fungsi didalam fungsi, a = f1(f2(5, f3(7)), 6)
+comment multiline
+REL belom lengkap (BISA PAKE IN DIDALEM)
