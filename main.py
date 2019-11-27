@@ -30,7 +30,7 @@ token_list = [
     (r'import ',                   'import'),
     (r'in ',                    'in'),
     (r'is ',                   'is'),
-    (r'not ',                    'not'),
+    (r'not',                    'not'),
     (r'or ',                  'or'),
     (r'pass',                  'pass'),
     (r'while',                 'while'),
@@ -188,7 +188,7 @@ grammarLeft = []
 grammarRight = []
 grammarLeft, grammarRight = readCNF("cnf.txt")
 
-inputfile = str(input("masukkan input file : "))
+#inputfile = str(input("masukkan input file : "))
 
 isFunc = False
 isLoop = False
@@ -197,7 +197,7 @@ ifStack = []
 ptr = 0
 Er = -1
 currline = 1
-with open(inputfile) as fp:
+with open(sys.argv[1]) as fp:
     line = fp.readline()
     while line:
         if(line[-1:] == '\n'):

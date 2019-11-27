@@ -1,5 +1,5 @@
-for i in range (a, b) :
-	print (i *7)
+for i not in range (a, b) :
+	print (i *5)
 
 b =9
 a = b*6
