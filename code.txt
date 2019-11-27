@@ -1,4 +1,4 @@
-for i not in range (a, b) :
+if not(6>5) :
 	print (i *5)
 
 b =9

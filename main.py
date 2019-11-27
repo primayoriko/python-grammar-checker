@@ -242,10 +242,6 @@ with open(sys.argv[1]) as fp:
                     Er = currline
                     break
             
-            
-            
-            
-        
         currline += 1
         line = fp.readline()
 
