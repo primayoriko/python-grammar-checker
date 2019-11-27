@@ -1,3 +1,4 @@
+if f(x) < 3 <1 <  6 < 7:
 a[2][a[2]]['asdsa'] = 7
 for i not in range(a,b) :
 	print (i *5)
