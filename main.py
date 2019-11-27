@@ -72,8 +72,7 @@ def lexer(text_code, token_list):
                 break
 
         if not match:
-            print("Your file .py error")
-            sys.exit(1)
+            tokenized = ["ojanganteng"]
         pos = match.end(0)
 
     return tokenized 
@@ -194,6 +193,9 @@ isFunc = False
 isLoop = False
 
 ifStack = []
+mtlStack = []
+idxStack = []
+msg = ""
 ptr = 0
 Er = -1
 currline = 1
@@ -206,46 +208,84 @@ with open(sys.argv[1]) as fp:
             inp = line
         if(inp!=""):
             lex = lexer(inp, token_list)
-            print(lex)
+            #print(lex)
             if(not(lex == [])):
-                if(lex[0] == "def"):
-                    isFunc = True
-                elif(lex[0] == "while" or lex[0] == "for"):
-                    isLoop = True
-                elif(lex[0] == "return"):
-                    if(isFunc == False):
-                        Er = currline
-                        break
-                elif(lex[0] == "continue" or lex[0] == "break"):
-                    if(isLoop == False):
-                        Er = currline
-                        break
-                elif(lex[0] == "if"):
-                    ifStack.append("if")
-                elif(lex[0] == "elif"):
-                    if(len(ifStack) == 0):
-                        Er = currline
-                        break
-                    else:
-                        ifStack.pop()
-                        ifStack.append("elif")
-                elif(lex[0] == "else"):
-                    if(len(ifStack) == 0):
-                        Er = currline
-                        break
-                    else:
-                        ifStack.pop()
-                dp = []
-                dp = CYK(len(lex), grammarLeft, grammarRight, dp, lex)
-                #printTree(dp, len(lex))
-                if(isValid(dp, len(lex)) == False):
+                if(lex ==["ojanganteng"]):
                     Er = currline
+                    msg = "Error parsing"
                     break
+                else:
+                    if(lex[0] == "def"):
+                        isFunc = True
+                    elif(lex[0] == "while" or lex[0] == "for"):
+                        isLoop = True
+                    elif(lex[0] == "return"):
+                        if(isFunc == False):
+                            Er = currline
+                            msg = "you can't use return! you didn't define any function!"
+                            break
+                    elif(lex[0] == "continue" or lex[0] == "break"):
+                        if(isLoop == False):
+                            Er = currline
+                            msg = "you can't use that! you didn't define any loop!"
+                            break
+                    elif(lex[0] == "if"):
+                        ifStack.append("if")
+                    elif(lex[0] == "elif"):
+                        if(len(ifStack) == 0):
+                            Er = currline
+                            msg = "you cant use elif without if"
+                            break
+                        else:
+                            ifStack.pop()
+                            ifStack.append("elif")
+                    elif(lex[0] == "else"):
+                        if(len(ifStack) == 0):
+                            Er = currline
+                            msg = "you cant use else without if or elif"
+                            break
+                        else:
+                            ifStack.pop()
+                    elif(lex[0] == "mtl" and len(lex) > 1):
+                        mtlStack.append("mtl")
+                        idxStack.append(currline)
+                    elif(lex[0] == "mtl" and len(lex) == 1):
+                        if(len(mtlStack) > 0):
+                            mtlStack.pop()
+                            idxStack.pop()
+                        else:
+                            mtlStack.append("mtl")
+                            idxStack.append(currline)
+                    elif(lex[len(lex) - 1] == "mtl"):
+                        if(len(mtlStack) > 0):
+                            mtlStack.pop()
+                            idxStack.pop()
+                        else:
+                            mtlStack.append("mtl")
+                            idxStack.append(currline)
+
+
+                    if(len(mtlStack) == 0 and not(lex[len(lex) - 1] == "mtl")):
+                        dp = []
+                        dp = CYK(len(lex), grammarLeft, grammarRight, dp, lex)
+                        #printTree(dp, len(lex))
+                        if(isValid(dp, len(lex)) == False):
+                            Er = currline
+                            break
+            
+            
+            
+            
             
         currline += 1
         line = fp.readline()
-
 if(Er == -1):
-    print("ACCEPTED")
+    if(len(mtlStack) == 0):
+        print("ACCEPTED")
+    else:
+        t = idxStack[len(idxStack) - 1]
+        print("Syntax Error on line : " + str(t))
+        print("Error Message = comment syntax is wrong")
 else:
     print("Syntax Error on line : " + str(Er))
+    print(msg)
